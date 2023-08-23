@@ -23,7 +23,9 @@ app.get('/', (req, res) => {
 //     })
 // })
 
-const router = require('./route/tours/getTours')
+app.use(express.json())
+
+const router = require('./route/tours/tour')
 app.use('/api/v1/tours', router)
 
 const port = 3000

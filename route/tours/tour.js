@@ -1,10 +1,10 @@
 const express = require('express')
-const {creatTour, getAllTours, getTour} = require('../../constroller/tours/getTours')
+const {creatTour, getAllTours, getTour} = require('../../constroller/tours/tour')
 
 
 const router = express.Router()
 
-// router.post('/', creatTour)
+router.post('/', creatTour)
 router.get('/', getAllTours)
 router.get('/:id', getTour)
 
