@@ -22,7 +22,22 @@ const creatTour = (req, res) => {
     }))
 }
 const getTour = (req, res) => {
-    // const tourId = 
+    const tourId = req.params.id * 1
+    const tour = tours.find(el => el.id == tourId)
+    
+    if(!tour) {
+        return res.status(404).json({
+            status: "fail",
+            message: "Tour with this id not found"
+        })
+        
+    }
+    res.status(200).json({
+        status: "success",
+        data: {
+            tour
+        }
+    })
 }
 
 module.exports = {creatTour, getAllTours, getTour}
