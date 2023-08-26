@@ -1,11 +1,14 @@
 const express = require('express')
-const {creatTour, getAllTours, getTour} = require('../../constroller/tours/tour')
+const {creatTour, getAllTours, getTour, updateTour, deleteTour} = require('../../constroller/tours/tour')
 
 
 const router = express.Router()
 
 router.post('/', creatTour)
 router.get('/', getAllTours)
-router.get('/:id', getTour)
+router.route('/:id')
+    .get(getTour)
+    .patch(updateTour)
+    .delete(deleteTour)
 
 module.exports = router
