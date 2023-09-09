@@ -1,5 +1,19 @@
 const fs = require('fs');
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+);
+
+const validId = (req, res, next, val) => {
+  const id = req.params.id * 1;
+  console.log(`Tour id is: ${val}`);
+  if (!id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+    next();
+  }
+};
 
 const getAllTours = (req, res) => {
   console.log(req.requestTime);
@@ -27,15 +41,8 @@ const creatTour = (req, res) => {
   );
 };
 const getTour = (req, res) => {
-  const tourId = req.params.id * 1;
-  const tour = tours.find((el) => el.id == tourId);
-
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Tour with this id not found',
-    });
-  }
+  const id = req.params.id * 1;
+  const tour = tours.find((el) => el.id == id);
   res.status(200).json({
     status: 'success',
     data: {
@@ -45,15 +52,8 @@ const getTour = (req, res) => {
 };
 
 const updateTour = (req, res) => {
-  const tourId = req.params.id * 1;
-  const tour = tours.find((el) => el.id == tourId);
-
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Tour with this id not found',
-    });
-  }
+  const id = req.params.id * 1;
+  const tour = tours.find((el) => el.id == id);
   res.status(200).json({
     status: 'success',
     data: {
@@ -63,8 +63,8 @@ const updateTour = (req, res) => {
 };
 
 const deleteTour = (req, res) => {
-  const tourId = req.params.id * 1;
-  const tour = tours.find((el) => el.id == tourId);
+  const id = req.params.id * 1;
+  const tour = tours.find((el) => el.id == id);
 
   if (!tour) {
     return res.status(404).json({
@@ -78,4 +78,4 @@ const deleteTour = (req, res) => {
   });
 };
 
-module.exports = { creatTour, getAllTours, getTour, updateTour, deleteTour };
+module.exports = { creatTour, getAllTours, getTour, updateTour, deleteTour, validId };
