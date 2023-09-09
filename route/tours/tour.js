@@ -9,6 +9,7 @@ const {
 
 const router = express.Router();
 
+
 router.post('/', creatTour);
 router.get('/', getAllTours);
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
