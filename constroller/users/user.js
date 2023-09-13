@@ -1,5 +1,5 @@
 const fs = require('fs');
-const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`));
+// const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`));
 
 const getAllUsesrs = (req, res) => {
   res.status(200).json({
