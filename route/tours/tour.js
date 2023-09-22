@@ -1,21 +1,15 @@
 const express = require('express');
-const tourController = require('../../constroller/tours/tour');
+const {
+  createTour,
+  getAllTours,
+  getTour,
+  updateTour,
+  deleteTour,
+} = require('../../constroller/tours/tour');
 
 const router = express.Router();
 
-// router.param('id', tourController);
-
-// Create a checkBody middleware
-// Check if body contains the name and price property
-// If not, send back 400 (bad request)
-// Add it to the post handler stack
-
-router.post('/', tourController.checkBody, tourController.creatTour);
-router.get('/', tourController.getAllTours);
-router
-  .route('/:id')
-  .get(tourController.getTour)
-  .patch(tourController.updateTour)
-  .delete(tourController.deleteTour);
+router.route('/').post(createTour).get(getAllTours);
+router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
 
 module.exports = router;
