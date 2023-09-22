@@ -1,17 +1,29 @@
 const fs = require('fs');
 const express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
-app.use(express.json());
 
-app.use(express.json());
-app.use(morgan('dev'))
+// Database connection
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.DATABASE);
 
-app.use((req, res, next) => {
-  console.log('Hello from middleware!');
-  next();
-});
+    console.log(`MongoDB Connected successfully!`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+  }
+};
+
+connectDB();
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+app.use(express.json());
+app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -22,8 +34,10 @@ app.use((req, res, next) => {
 //   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.js`)
 // );
 
-const router = require('./route/tours/tour');
-app.use('/api/v1/tours', router);
+const tours = require('./route/tours/tour');
+const users = require('./route/users/user');
+app.use('/api/v1/tours', tours);
+app.use('/api/v1/users', users);
 
 const port = 3000;
 app.listen(port, () => {
