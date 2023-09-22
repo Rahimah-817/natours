@@ -1,31 +1,7 @@
-const fs = require('fs');
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`)
-);
-
-// Validations
-const validId = (req, res, next, val) => {
-  const id = req.params.id * 1;
-  console.log(`Tour id is: ${val}`);
-  if (!id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-  next();
-};
-const checkBody = (req, res, next) => {
-  if (!req.body.name || !req.body.price) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Missing name or price',
-    });
-  }
-  next();
-};
+const Tour = require('../../model/tourSchema');
 
 const getAllTours = (req, res) => {
+  const tours = Tour.find(req.body.name);
   console.log(req.requestTime);
   res.status(200).json({
     status: 'success',
@@ -35,24 +11,24 @@ const getAllTours = (req, res) => {
   });
 };
 
-const createTour = (req, res) => {
-  const newId = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, req.body);
-
-  tours.push(newTour);
-  fs.writeFile(
-    `${__dirname}/tours-simple.json`,
-    JSON.stringify(tours, (err) => {
-      res.status(201).json({
-        status: 'success',
-        data: newTour,
-      });
-    })
-  );
+const createTour = async (req, res) => {
+  try {
+    const tour = await Tour.create(req.body);
+    res.status(200).json({
+      status: 'success',
+      data: tour,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data sent!',
+    });
+  }
 };
+
 const getTour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = tours.find((el) => el.id == id);
+  const tour = Tour.find((el) => el.id == id);
   res.status(200).json({
     status: 'success',
     data: {
@@ -63,7 +39,7 @@ const getTour = (req, res) => {
 
 const updateTour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = tours.find((el) => el.id == id);
+  const tour = Tour.find((el) => el.id == id);
   res.status(200).json({
     status: 'success',
     data: {
@@ -74,7 +50,7 @@ const updateTour = (req, res) => {
 
 const deleteTour = (req, res) => {
   const id = req.params.id * 1;
-  const tour = tours.find((el) => el.id == id);
+  const tour = Tour.find((el) => el.id == id);
 
   if (!tour) {
     return res.status(404).json({
@@ -94,6 +70,4 @@ module.exports = {
   getTour,
   updateTour,
   deleteTour,
-  validId,
-  checkBody,
 };
