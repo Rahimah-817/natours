@@ -3,6 +3,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/tours-simple.json`)
 );
 
+// Validations
 const validId = (req, res, next, val) => {
   const id = req.params.id * 1;
   console.log(`Tour id is: ${val}`);
