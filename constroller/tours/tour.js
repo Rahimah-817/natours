@@ -35,7 +35,7 @@ const getAllTours = (req, res) => {
   });
 };
 
-const creatTour = (req, res) => {
+const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 
@@ -89,7 +89,7 @@ const deleteTour = (req, res) => {
 };
 
 module.exports = {
-  creatTour,
+  createTour,
   getAllTours,
   getTour,
   updateTour,

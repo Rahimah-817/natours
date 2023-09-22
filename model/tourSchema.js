@@ -10,7 +10,10 @@ const tourSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  rating: Number,
+  rating: {
+    type: Number,
+    default: 4,
+  },
 });
 const Tour = mongoose.model('tour', tourSchema);
 module.exports = Tour;

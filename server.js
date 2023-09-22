@@ -9,7 +9,7 @@ const app = express();
 // Database connection
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.DATABASE);
+    const conn = await mongoose.connect(process.env.LOCAL_DATABASE);
 
     console.log(`MongoDB Connected successfully!`);
   } catch (error) {
@@ -35,8 +35,10 @@ app.use((req, res, next) => {
 // );
 
 const tours = require('./route/tours/tour');
+const tourRoute = require('./route/tours/tourRoute');
 const users = require('./route/users/user');
 app.use('/api/v1/tours', tours);
+app.use('/api/v1/tours/create', tourRoute);
 app.use('/api/v1/users', users);
 
 const port = 3000;

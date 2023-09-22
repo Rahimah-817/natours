@@ -10,7 +10,7 @@ const router = express.Router();
 // If not, send back 400 (bad request)
 // Add it to the post handler stack
 
-router.post('/', tourController.checkBody, tourController.creatTour);
+router.post('/', tourController.checkBody, tourController.createTour);
 router.get('/', tourController.getAllTours);
 router
   .route('/:id')
