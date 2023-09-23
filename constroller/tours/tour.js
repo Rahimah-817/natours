@@ -26,21 +26,26 @@ const createTour = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: 'Invalid data sent!',
+      message: err,
     });
   }
 };
 
 const getTour = async (req, res) => {
   const tourId = req.params.id;
+  console.log(req.query);
   try {
     const tour = await Tour.findById(tourId);
+    if (!tour) {
+      res.status(404).json({
+        status: 'fail',
+        message: 'tour not found',
+      });
+    }
     // const tour = await Tour.findOne({_id: tourId});
     res.status(200).json({
       status: 'success',
-      data: {
-        tour,
-      },
+      tour,
     });
   } catch (err) {
     res.status(404).json({
