@@ -1,7 +1,9 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
-require('dotenv').config;
 const Tour = require('../../model/tourSchema');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: './config.env' });
 
 const connectDB = async () => {
   try {
