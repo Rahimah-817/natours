@@ -106,7 +106,7 @@ const getTour = async (req, res) => {
       tour,
     });
   } catch (err) {
-    res.status(404).json({
+    res.status(500).json({
       status: "fail",
       message: err,
     });
@@ -169,7 +169,7 @@ const getTourState = async (req, res) => {
         $sort: { avgPrice: 1 },
       },
       {
-        $match: { _id: { $ne: "EASY" } },
+        $match: { _id: { $ne: "EASY" } }, // Use string representation of _id field
       },
     ]);
     res.status(200).json({
@@ -179,9 +179,9 @@ const getTourState = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(404).json({
+    res.status(500).json({
       status: "fail",
-      message: error,
+      message: error.message,
     });
   }
 };
