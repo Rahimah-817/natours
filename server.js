@@ -4,6 +4,9 @@ const morgan = require("morgan");
 const connectDB = require("./config/db");
 require("dotenv").config();
 
+const AppError = require("./utils/appError");
+const globalErrorHandler = require("./constroller/error/errorwqController");
+
 const app = express();
 
 // Database connection
@@ -24,22 +27,10 @@ app.use("/api/v1/tours", tours);
 app.use("/api/v1/users", users);
 
 app.all("*", (req, res, next) => {
-  const err = new Error(`Can't find ${req.originalUrl} on this server!`);
-  err.status = "fail";
-  err.statusCode = 404;
-
-  next(err);
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`));
 });
 
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || "error";
-
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-});
+app.use(globalErrorHandler);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
