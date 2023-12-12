@@ -5,7 +5,7 @@ const connectDB = require("./config/db");
 require("dotenv").config();
 
 const AppError = require("./utils/appError");
-const globalErrorHandler = require("./constroller/error/errorwqController");
+const globalErrorHandler = require("./constroller/error/errorController");
 
 const app = express();
 
