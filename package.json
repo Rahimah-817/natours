@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js",
+    "start": "nodemon server.js",
+    "start:prod": "nodemon server.js",
     "debug": "ndb server.js"
   },
   "author": "",
@@ -20,6 +20,7 @@
     "validator": "^13.11.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.49.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
