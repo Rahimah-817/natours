@@ -7,6 +7,12 @@ require("dotenv").config();
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./constroller/error/errorController");
 
+process.on("uncaughtException", (err) => {
+  console.log(err);
+  console.log("UNHANDLER REJECTION! 💥 Shutting down...");
+  process.exist(1);
+});
+
 const app = express();
 
 // Database connection
@@ -37,7 +43,7 @@ const server = app.listen(port, () => {
 
 process.on("unhandledRejection", (err) => {
   console.log(err);
-  console.log("UNHANDLER REJECTION! 💥 Shutting down...");
+  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
   server.close(() => {
     process.exist(1);
   });

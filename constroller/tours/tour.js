@@ -20,7 +20,7 @@ const getAllTours = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    tours: tours.length,
+    index: tours.lenght,
     data: tours,
   });
 });
@@ -30,16 +30,17 @@ const createTour = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: tour,
+    message: "Tour created successfully!"
   });
 });
 
 const getTour = catchAsync(async (req, res, next) => {
   const tourId = req.params.id;
   const tour = await Tour.findById(tourId);
+  console.log(tour)
   if (!tour) {
     return next(new AppError("No tour found with that id", 404));
   }
-  // const tour = await Tour.findOne({_id: tourId});
   res.status(200).json({
     status: "success",
     tour,
