@@ -10,7 +10,7 @@ const globalErrorHandler = require("./constroller/error/errorController");
 process.on("uncaughtException", (err) => {
   console.log(err);
   console.log("UNHANDLER REJECTION! 💥 Shutting down...");
-  process.exist(1);
+  process.exit(1);
 });
 
 const app = express();
@@ -45,6 +45,6 @@ process.on("unhandledRejection", (err) => {
   console.log(err);
   console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
   server.close(() => {
-    process.exist(1);
+    process.exit(1);
   });
 });
