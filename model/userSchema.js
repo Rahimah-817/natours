@@ -5,12 +5,12 @@ const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    requierd: [true, "Enter your name!"],
+    required: [true, "Enter your name!"],
   },
   email: {
     type: String,
-    requierd: [true, "Enter your email!"],
-    uniqu: true,
+    required: [true, "Enter your email!"],
+    unique: true,
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
   },
@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please provide a password"],
+    minlength: 8,
+    select: false,
   },
   confirmPassword: {
     type: String,
@@ -43,6 +45,13 @@ userSchema.pre("save", async function (next) {
   this.confirmPassword = undefined;
   next();
 });
+
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword,
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 const User = mongoose.model("user", userSchema);
 module.exports = User;
