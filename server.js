@@ -7,6 +7,12 @@ require("dotenv").config();
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./constroller/error/errorController");
 
+process.on("uncaughtException", (err) => {
+  console.log(err);
+  console.log("UNHANDLER REJECTION! 💥 Shutting down...");
+  process.exit(1);
+});
+
 const app = express();
 
 // Database connection
@@ -17,9 +23,6 @@ if (process.env.NODE_ENV === "development") {
 }
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
-// const tours = JSON.parse(
-//   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.js`)
-// );
 
 const tours = require("./route/tours/tour");
 const users = require("./route/users/user");
@@ -33,6 +36,15 @@ app.all("*", (req, res, next) => {
 app.use(globalErrorHandler);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
+
+const server = app.listen(port, () => {
   console.log(`App running on port:${port}...`);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log(err);
+  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
+  server.close(() => {
+    process.exit(1);
+  });
 });

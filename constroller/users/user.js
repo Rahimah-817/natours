@@ -1,14 +1,17 @@
-const fs = require('fs');
-const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`));
+const User = require("../../model/userSchema");
+const catchAsync = require("../../utils/catchAsync");
 
-const getAllUsesrs = (req, res) => {
+const getAllUsesrs = catchAsync(async (req, res, next) => {
+  const users = await User.find();
+
   res.status(200).json({
-    status: 'success',
+    status: "success",
+    results: users.length,
     data: {
       users,
     },
   });
-};
+});
 
 const createUser = (req, res) => {
   const userId = req.params.id;
@@ -19,17 +22,17 @@ const createUser = (req, res) => {
     `${__dirname}/users.json`,
     JSON.stringify(users, (err) => {
       res.status(201).json({
-        status: 'success',
+        status: "success",
         data: newUser,
       });
-    })
+    }),
   );
 };
 
 const getUser = (req, res) => {
   const userId = req.params.id;
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data: users.find((user) => user.id === userId),
   });
 };
@@ -42,10 +45,10 @@ const updateUser = (req, res) => {
     `${__dirname}/users.json`,
     JSON.stringify(users, (err) => {
       res.status(200).json({
-        status: 'success',
+        status: "success",
         data: users[userIndex],
       });
-    })
+    }),
   );
 };
 
@@ -57,14 +60,12 @@ const deleteUser = (req, res) => {
     `${__dirname}/users.json`,
     JSON.stringify(users, (err) => {
       res.status(200).json({
-        status: 'success',
+        status: "success",
         data: null,
       });
-    })
+    }),
   );
 };
-
-
 
 module.exports = {
   getAllUsesrs,
