@@ -14,6 +14,7 @@ const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
+    role: req.body.role,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
   });
@@ -67,8 +68,8 @@ const protect = catchAsync(async (req, res, next) => {
   console.log(decoded);
 
   // Check if user still exists
-  const freshUser = await User.findById(decoded.id);
-  if (!freshUser) {
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser) {
     return new AppError(
       "The user belonging to this token does no longer exist.",
       401,
@@ -76,9 +77,23 @@ const protect = catchAsync(async (req, res, next) => {
   }
 
   // Check if user chanch password after token was issued
-  freshUser.changedPasswordAfter(decoded.iat);
+  currentUser.changedPasswordAfter(decoded.iat);
 
+  // req.user = currentUser;
   next();
 });
 
-module.exports = { signup, login, protect };
+const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles: ['admin', 'lead-guide']
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action!", 403),
+      );
+    }
+
+    next();
+  };
+};
+
+module.exports = { signup, login, protect, restrictTo };

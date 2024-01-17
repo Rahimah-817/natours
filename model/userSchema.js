@@ -32,6 +32,11 @@ const userSchema = new mongoose.Schema({
       message: "Passwords are not the same!",
     },
   },
+  role: {
+    type: String,
+    enum: ["user", "guide", "lead-guide", "admin"],
+    default: "user",
+  },
   passwordChangedAt: Date,
 });
 
@@ -56,7 +61,7 @@ userSchema.methods.correctPassword = async function (
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passweordChagedAt) {
-    const changedTimestamp = this.passwordChangedAt.getTime()/1000;
+    const changedTimestamp = this.passwordChangedAt.getTime() / 1000;
     console.log(this.passweordChagedAt, JWTTimestamp);
   }
 
