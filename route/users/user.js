@@ -10,6 +10,7 @@ const {
 
 const {
   getAllUsesrs,
+  updateMe,
   createUser,
   getUser,
   updateUser,
@@ -25,6 +26,7 @@ router.post("/forgot-password", forgotPassword);
 router.patch("/reset-password/:token", resetPassword);
 
 router.patch("/updateMyPassword", protect, updatePassword);
+router.patch("/updateMe", protect, updateMe);
 
 router.route("/").get(getAllUsesrs).post(createUser);
 router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);

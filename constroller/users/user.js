@@ -1,6 +1,14 @@
 const User = require("../../model/userSchema");
 const catchAsync = require("../../utils/catchAsync");
 
+const filterObj = (obj, ...allowedFields) => {
+  Object.keys(obj).forEach((el) => {
+    const newObj = {};
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+
 const getAllUsesrs = catchAsync(async (req, res, next) => {
   const users = await User.find();
 
@@ -10,6 +18,29 @@ const getAllUsesrs = catchAsync(async (req, res, next) => {
     data: {
       users,
     },
+  });
+});
+
+const updateMe = catchAsync(async (req, res, next) => {
+  // Create Error if user POSTs password data
+  if (req.body.password || req.body.confirmPassword) {
+    return next(
+      new AppError(
+        "This route is not for password update. Please use /updateMyPassword.",
+        404,
+      ),
+    );
+  }
+  // filterd the unwanted field
+  const filteredBody = filterObj(req.body, "name", "email");
+  // Update user document
+  const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    status: "success",
+    updateUser,
   });
 });
 
@@ -69,6 +100,7 @@ const deleteUser = (req, res) => {
 
 module.exports = {
   getAllUsesrs,
+  updateMe,
   createUser,
   getUser,
   updateUser,
