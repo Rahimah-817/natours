@@ -1,9 +1,10 @@
 const User = require("../../model/userSchema");
 const catchAsync = require("../../utils/catchAsync");
+const AppError = require("../../utils/appError");
 
 const filterObj = (obj, ...allowedFields) => {
+  let newObj = {};
   Object.keys(obj).forEach((el) => {
-    const newObj = {};
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
   return newObj;
@@ -31,17 +32,26 @@ const updateMe = catchAsync(async (req, res, next) => {
       ),
     );
   }
-  // filterd the unwanted field
+
+  // Filter the unwanted fields
   const filteredBody = filterObj(req.body, "name", "email");
+
   // Update user document
   const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
   });
+
   res.status(200).json({
     status: "success",
     updateUser,
   });
+});
+
+const deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  res.status(204).json({ status: "success", data: null });
 });
 
 const createUser = (req, res) => {
@@ -101,6 +111,7 @@ const deleteUser = (req, res) => {
 module.exports = {
   getAllUsesrs,
   updateMe,
+  deleteMe,
   createUser,
   getUser,
   updateUser,

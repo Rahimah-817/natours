@@ -13,7 +13,7 @@ const signToken = (id) => {
 };
 
 const createSendToken = (user, statusCode, res) => {
-  const token = signToken(newUser._id);
+  const token = signToken(user._id);
   res.status(statusCode).json({
     status: "success",
     token,
@@ -24,14 +24,14 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 const signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
+  const user = await User.create({
     name: req.body.name,
     email: req.body.email,
     role: req.body.role,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
   });
-  createSendToken(newUser, 201, res);
+  createSendToken(user, 201, res);
 });
 
 const login = catchAsync(async (req, res, next) => {
