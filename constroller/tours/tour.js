@@ -4,7 +4,7 @@ const APIFeatures = require("../../utils/appFeatures");
 const catchAsync = require("../../utils/catchAsync");
 
 const aliesTopTours = async (req, res, next) => {
-  req.query.limit = "5";
+  req.query.limit = "6";
   req.query.sort = "ratingAverage,price";
   req.query.fields = "name,price,ratingAverage,summary,difficulty";
   next();
@@ -14,23 +14,29 @@ const getAllTours = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
     .sort()
-    .limit()
+    .limitFields()
     .paginate();
-  const tours = await features.query;
+  const tours = await Tour.find();
 
+  // SEND RESPONSE
   res.status(200).json({
-    status: "success",
+    status: 'success',
     results: tours.length,
-    data: tours,
+    data: {
+      tours: tours
+    }
   });
 });
 
+
 const createTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.create(req.body);
-  res.status(200).json({
+  const newTour = await Tour.create(req.body);
+
+  res.status(201).json({
     status: "success",
-    data: tour,
-    message: "Tour created successfully!"
+    data: {
+      tour: newTour,
+    },
   });
 });
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const validator = require("validator");
+// const validator = require("validator");
+// const User = require("./userSchema");
 
 const tourSchema = new mongoose.Schema(
   {
@@ -10,7 +11,7 @@ const tourSchema = new mongoose.Schema(
       unique: true,
       maxLength: [40, "A Tour name must have less or equal then 40 characters"],
       minLength: [10, "A Tour name must have more or equal then 10 characters"],
-      validate: [validator.isAlpha, "Tour name must only contain character"],
+      // validate: [validator.isAlpha, "Tour name must only contain character"],
     },
     slug: {
       type: String,
@@ -77,6 +78,36 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      // GeoJSON
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"],
+      },
+      coorinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: "Point",
+          enum: ["Point"],
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     toJSON: {
@@ -97,6 +128,12 @@ tourSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+// tourSchema.pre("save", async function (next) {
+//   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
 
 // QUERY MIDDLEWARE:
 tourSchema.pre("find", function (next) {
