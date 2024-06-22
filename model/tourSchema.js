@@ -153,6 +153,11 @@ tourSchema.post(/^find/, function (docs, next) {
   next();
 });
 
+tourSchema.pre(/^find/, function (next) {
+  this.populate({ path: "guides", select: "-__v -passwordChangedAt" });
+  next();
+});
+
 // AGGREGATION MIDDLEWARE
 tourSchema.pre("aggregate", function (next) {
   this.pipeline().unshift({ $match: { $secretTour: { $ne: true } } });
@@ -160,5 +165,5 @@ tourSchema.pre("aggregate", function (next) {
   console.log(this.pipeline);
 });
 
-const Tour = mongoose.model("tour", tourSchema);
+const Tour = mongoose.model("Tour", tourSchema);
 module.exports = Tour;
