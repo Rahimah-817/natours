@@ -16,10 +16,10 @@ const {
 
 const router = express.Router();
 
-router.route("/").post(createTour).get(protect, getAllTours);
+router.route("/").post(createTour).get(getAllTours);
 router
   .route("/:id")
-  .get(getTour)
+  .get(getTour) 
   .patch(updateTour)
   .delete(protect, restrictTo("admin", "lead-guide"), deleteTour);
 router.route("/top-5-cheap").get(aliesTopTours, getAllTours);

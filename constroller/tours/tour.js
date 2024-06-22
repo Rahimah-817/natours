@@ -16,18 +16,17 @@ const getAllTours = catchAsync(async (req, res, next) => {
     .sort()
     .limitFields()
     .paginate();
-  const tours = await Tour.find();
+  const tours = await features.query;
 
   // SEND RESPONSE
   res.status(200).json({
-    status: 'success',
+    status: "success",
     results: tours.length,
     data: {
-      tours: tours
-    }
+      tours: tours,
+    },
   });
 });
-
 
 const createTour = catchAsync(async (req, res, next) => {
   const newTour = await Tour.create(req.body);
@@ -42,7 +41,7 @@ const createTour = catchAsync(async (req, res, next) => {
 
 const getTour = catchAsync(async (req, res, next) => {
   const tourId = req.params.id;
-  const tour = await Tour.findById(tourId);
+  const tour = await Tour.findById(tourId).populate('review')
   if (!tour) {
     return next(new AppError("No tour found with that id", 404));
   }

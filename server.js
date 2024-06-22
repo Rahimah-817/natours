@@ -68,8 +68,10 @@ app.use(express.static(`${__dirname}/public`));
 
 const tours = require("./route/tours/tour");
 const users = require("./route/users/user");
+const reviews = require("./route/reviews/review");
 app.use("/api/v1/tours", tours);
 app.use("/api/v1/users", users);
+app.use("/api/v1/reviews", reviews);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`));

@@ -46,6 +46,11 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    select: false,
+  },
 });
 
 userSchema.pre("save", async function (next) {
@@ -108,5 +113,5 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;
