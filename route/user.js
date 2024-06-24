@@ -7,7 +7,7 @@ const {
   updatePassword,
   protect,
   restrictTo,
-} = require("../../constroller/auth/authController");
+} = require("../controller/authController");
 
 const {
   getAllUsesrs,
@@ -17,7 +17,7 @@ const {
   getUser,
   updateUser,
   deleteUser,
-} = require("../../constroller/users/user");
+} = require("../controller/user");
 
 
 const router = express.Router();
