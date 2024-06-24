@@ -14,10 +14,7 @@ const {
   restrictTo,
 } = require("../../constroller/auth/authController");
 
-const {
-  createReview,
-  getAllReviews,
-} = require("../../constroller/reviews/review");
+const reviewRouter = require('../reviews/review')
 
 const router = express.Router();
 
@@ -31,10 +28,6 @@ router.route("/top-5-cheap").get(aliesTopTours, getAllTours);
 router.route("/tour-stats").get(getTourState);
 router.route("/monthly-plan/:year").get(getMonthlyPlan);
 
-router
-  .route("/:tourId/reviews")
-  .post(protect, restrictTo("user"), createReview)
-  .get(getAllReviews);
-
+router.use('./tourId/reviews', reviewRouter)
 
 module.exports = router;
