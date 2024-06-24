@@ -6,6 +6,7 @@ const {
   resetPassword,
   updatePassword,
   protect,
+  restrictTo,
 } = require("../../constroller/auth/authController");
 
 const {
@@ -17,6 +18,7 @@ const {
   updateUser,
   deleteUser,
 } = require("../../constroller/users/user");
+
 
 const router = express.Router();
 
