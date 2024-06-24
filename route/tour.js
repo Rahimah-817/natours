@@ -8,13 +8,13 @@ const {
   aliesTopTours,
   getTourState,
   getMonthlyPlan,
-} = require("../../constroller/tours/tour");
+} = require("../controller/tour");
 const {
   protect,
   restrictTo,
-} = require("../../constroller/auth/authController");
+} = require("../controller/authController");
 
-const reviewRouter = require('../reviews/review')
+const reviewRouter = require('./review')
 
 const router = express.Router();
 
@@ -28,6 +28,6 @@ router.route("/top-5-cheap").get(aliesTopTours, getAllTours);
 router.route("/tour-stats").get(getTourState);
 router.route("/monthly-plan/:year").get(getMonthlyPlan);
 
-router.use('./tourId/reviews', reviewRouter)
+router.use('/:tourId/reviews', reviewRouter)
 
 module.exports = router;

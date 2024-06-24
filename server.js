@@ -10,7 +10,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 
 const AppError = require("./utils/appError");
-const globalErrorHandler = require("./constroller/error/errorController");
+const globalErrorHandler = require("./controller/errorController");
 
 process.on("uncaughtException", (err) => {
   console.log(err);
@@ -66,9 +66,9 @@ app.use(
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
 
-const tours = require("./route/tours/tour");
-const users = require("./route/users/user");
-const reviews = require("./route/reviews/review");
+const tours = require("./route/tour");
+const users = require("./route/user");
+const reviews = require("./route/review");
 app.use("/api/v1/tours", tours);
 app.use("/api/v1/users", users);
 app.use("/api/v1/reviews", reviews);

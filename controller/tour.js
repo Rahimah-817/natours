@@ -1,7 +1,7 @@
-const Tour = require("../../model/tourSchema");
-const AppError = require("../../utils/appError");
-const APIFeatures = require("../../utils/appFeatures");
-const catchAsync = require("../../utils/catchAsync");
+const Tour = require("../model/tourSchema");
+const AppError = require("../utils/appError");
+const APIFeatures = require("../utils/appFeatures");
+const catchAsync = require("../utils/catchAsync");
 
 const aliesTopTours = async (req, res, next) => {
   req.query.limit = "6";
