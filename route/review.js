@@ -2,6 +2,7 @@ const express = require("express");
 const {
   createReview,
   getAllReviews,
+  getReview,
   deleteReview,
   updateReview,
   setTourAndUserIds,
@@ -14,6 +15,6 @@ router
   .route("/")
   .get(getAllReviews)
   .post(protect, restrictTo("user"), setTourAndUserIds, createReview);
-router.route("/:id").delete(deleteReview).patch(updateReview);
+router.route("/:id").get(getReview).patch(updateReview).delete(deleteReview);
 
 module.exports = router;
