@@ -1,7 +1,7 @@
 const User = require("../model/userSchema");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const factory = require('./handlerFactory')
+const factory = require("./handlerFactory");
 
 const filterObj = (obj, ...allowedFields) => {
   let newObj = {};
@@ -71,32 +71,11 @@ const createUser = (req, res) => {
   );
 };
 
-const getUser = (req, res) => {
-  const userId = req.params.id;
-  const user = User.findById(userId);
+const getUser = factory.getOne(User);
 
-  res.status(200).json({
-    status: "success",
-    data: user,
-  });
-};
-
-const updateUser = (req, res) => {
-  const userId = req.params.id;
-  const userIndex = users.findIndex((user) => user.id === userId);
-  users[userIndex] = req.body;
-  fs.writeFile(
-    `${__dirname}/users.json`,
-    JSON.stringify(users, (err) => {
-      res.status(200).json({
-        status: "success",
-        data: users[userIndex],
-      });
-    }),
-  );
-};
-
-const deleteUser = factory.deleteOne(User)
+// DON'T update the password with this
+const updateUser = factory.updateOne(User);
+const deleteUser = factory.deleteOne(User);
 
 module.exports = {
   getAllUsesrs,

@@ -29,17 +29,6 @@ const getAllTours = catchAsync(async (req, res, next) => {
   });
 });
 
-const createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      tour: newTour,
-    },
-  });
-});
-
 const getTour = catchAsync(async (req, res, next) => {
   const tourId = req.params.id;
   const tour = await Tour.findById(tourId).populate("review");
@@ -52,34 +41,9 @@ const getTour = catchAsync(async (req, res, next) => {
   });
 });
 
-const updateTour = catchAsync(async (req, res, next) => {
-  const tourId = req.params.id;
-  if (!tourId) {
-    return next(new AppError("No tour found with that id", 404));
-  }
-  const tour = await Tour.findByIdAndUpdate(tourId, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({
-    status: "success",
-    data: tour,
-  });
-});
-
+const createTour = factory.createOne(Tour)
+const updateTour = factory.updateOne(Tour)
 const deleteTour = factory.deleteOne(Tour)
-
-// const deleteTour = catchAsync(async (req, res, next) => {
-//   const tourId = req.params.id;
-//   if (!tourId) {
-//     return next(new AppError("No tour found with that id", 404));
-//   }
-//   await Tour.findByIdAndDelete(tourId);
-//   res.status(204).json({
-//     status: "success",
-//     data: null,
-//   });
-// });
 
 const getTourState = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
