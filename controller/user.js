@@ -1,7 +1,7 @@
 const User = require("../model/userSchema");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const factory = require('./handlerFactory')
+const factory = require("./handlerFactory");
 
 const filterObj = (obj, ...allowedFields) => {
   let newObj = {};
@@ -10,18 +10,6 @@ const filterObj = (obj, ...allowedFields) => {
   });
   return newObj;
 };
-
-const getAllUsesrs = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    status: "success",
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
 
 const updateMe = catchAsync(async (req, res, next) => {
   // Create Error if user POSTs password data
@@ -56,47 +44,23 @@ const deleteMe = catchAsync(async (req, res, next) => {
 });
 
 const createUser = (req, res) => {
-  const userId = req.params.id;
-  const newUser = Object.assign({ id: userId }, req.body);
-
-  users.push(newUser);
-  fs.writeFile(
-    `${__dirname}/users.json`,
-    JSON.stringify(users, (err) => {
-      res.status(201).json({
-        status: "success",
-        data: newUser,
-      });
-    }),
-  );
-};
-
-const getUser = (req, res) => {
-  const userId = req.params.id;
-  const user = User.findById(userId);
-
-  res.status(200).json({
-    status: "success",
-    data: user,
+  res.status(500).json({
+    status: "error",
+    message: "This route is not defined! Please use /signup instead",
   });
 };
 
-const updateUser = (req, res) => {
-  const userId = req.params.id;
-  const userIndex = users.findIndex((user) => user.id === userId);
-  users[userIndex] = req.body;
-  fs.writeFile(
-    `${__dirname}/users.json`,
-    JSON.stringify(users, (err) => {
-      res.status(200).json({
-        status: "success",
-        data: users[userIndex],
-      });
-    }),
-  );
+const getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
 };
 
-const deleteUser = factory.deleteOne(User)
+
+const getAllUsesrs = factory.getAll(User);
+const getUser = factory.getOne(User);
+// DON'T update the password with this
+const updateUser = factory.updateOne(User);
+const deleteUser = factory.deleteOne(User);
 
 module.exports = {
   getAllUsesrs,
@@ -106,4 +70,5 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  getMe,
 };
