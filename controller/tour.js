@@ -11,7 +11,7 @@ const aliesTopTours = async (req, res, next) => {
 };
 
 const getAllTours = factory.getAll(Tour)
-const getTour = factory.getOne(Tour, {path: 'reviews'})
+const getTour = factory.getOne(Tour, {path: 'review'})
 const createTour = factory.createOne(Tour)
 const updateTour = factory.updateOne(Tour)
 const deleteTour = factory.deleteOne(Tour)
