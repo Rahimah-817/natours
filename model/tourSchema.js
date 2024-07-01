@@ -57,15 +57,14 @@ const tourSchema = new mongoose.Schema(
     summary: {
       type: String,
       trim: true,
-      required: [true, "A tour must have a summary"],
+      // required: [true, "A tour must have a summary"],
     },
     description: {
       type: String,
-      trim: true,
     },
     imageCover: {
       type: String,
-      required: [true, "A tour must have a cover image"],
+      // required: [true, "A tour must have a cover image"],
     },
     images: [String],
     createdAt: {
@@ -118,6 +117,10 @@ const tourSchema = new mongoose.Schema(
     },
   },
 );
+
+// tourSchema.index({ price: 1 });
+tourSchema.index({ price: 1, ratingAverage: -1 });
+tourSchema.index({ slug: 1 });
 
 tourSchema.virtual("durationWeeks").get(function () {
   return this.duration / 7;
