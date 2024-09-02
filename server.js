@@ -77,7 +77,10 @@ const users = require("./route/user");
 const reviews = require("./route/review");
 
 app.get("/", (req, res) => {
-  res.status(200).render("base"); // This will render views/base.ejs
+  res.status(200).render("base", {
+    tour: "The Forest Hiker",
+    user: "Rahimah",
+  }); // This will render views/base.ejs
 });
 
 app.use("/api/v1/tours", tours);
