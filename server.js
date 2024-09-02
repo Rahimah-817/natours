@@ -75,24 +75,9 @@ app.use(express.static(path.join(__dirname, "public")));
 const tours = require("./route/tour");
 const users = require("./route/user");
 const reviews = require("./route/review");
+const viewRouter = require("./route/viewRoutes");
 
-// PUG template engine
-app.get("/", (req, res) => {
-  res.status(200).render("base", {
-    title: "Exciting tours for adventurous people",
-  });
-});
-app.get("/overview", (req, res) => {
-  res.status(200).render("overview", {
-    title: "All Tours",
-  });
-});
-app.get("/tour", (req, res) => {
-  res.status(200).render("tour", {
-    title: "THe Forest Hiker Tour",
-  });
-});
-
+app.use("/", viewRouter);
 app.use("/api/v1/tours", tours);
 app.use("/api/v1/users", users);
 app.use("/api/v1/reviews", reviews);
