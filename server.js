@@ -76,11 +76,21 @@ const tours = require("./route/tour");
 const users = require("./route/user");
 const reviews = require("./route/review");
 
+// PUG template engine
 app.get("/", (req, res) => {
   res.status(200).render("base", {
-    tour: "The Forest Hiker",
-    user: "Rahimah",
-  }); // This will render views/base.ejs
+    title: "Exciting tours for adventurous people",
+  });
+});
+app.get("/overview", (req, res) => {
+  res.status(200).render("overview", {
+    title: "All Tours",
+  });
+});
+app.get("/tour", (req, res) => {
+  res.status(200).render("tour", {
+    title: "THe Forest Hiker Tour",
+  });
 });
 
 app.use("/api/v1/tours", tours);
