@@ -8,6 +8,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const path = require("path");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errorController");
@@ -19,6 +20,10 @@ process.on("uncaughtException", (err) => {
 });
 
 const app = express();
+
+// PUG
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 // Database connection
 connectDB();
@@ -64,11 +69,17 @@ app.use(
 );
 
 // Serving static files
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(path.join(__dirname, "public")));
 
+// ROUTES
 const tours = require("./route/tour");
 const users = require("./route/user");
 const reviews = require("./route/review");
+
+app.get("/", (req, res) => {
+  res.status(200).render("base"); // This will render views/base.ejs
+});
+
 app.use("/api/v1/tours", tours);
 app.use("/api/v1/users", users);
 app.use("/api/v1/reviews", reviews);
