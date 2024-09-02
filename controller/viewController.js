@@ -1,23 +1,26 @@
-const getBase = (req, res) => {
-  res.status(200).render("base", {
-    title: "Exciting tours for adventurous people",
-  });
-};
+const Tour = require("../model/tourSchema");
+const catchAsync = require("../utils/catchAsync");
 
-const getOverview = (req, res) => {
+const getOverview = catchAsync(async (req, res, next) => {
+  // 1) get tour data from collection
+  const tours = await Tour.find();
+
+  // 2) Build template
+  // 3) Render that template using tour data from 1.
+
   res.status(200).render("overview", {
-    title: "All Tours",
+      title: "All Tours",
+      tours
   });
-};
+});
 
 const getTour = (req, res) => {
   res.status(200).render("tour", {
-    title: "The Forest Hiker Tour", 
+    title: "The Forest Hiker Tour",
   });
 };
 
 module.exports = {
-    getBase,
   getOverview,
   getTour,
 };
