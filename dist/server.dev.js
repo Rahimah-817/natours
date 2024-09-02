@@ -61,7 +61,7 @@ app.use(mongoSanitize()); // Data sanitization against XSS
 app.use(xss()); // Prevent parameter pollution
 
 app.use(hpp({
-  whitelist: ["duration", "ratingQuantity", "ratingAverage", "difficulty", "maxGroupSize", "price"]
+  whitelist: ["duration", "ratingsQuantity", "ratingsAverage", "difficulty", "maxGroupSize", "price"]
 })); // Serving static files
 
 app.use(express["static"](path.join(__dirname, "public"))); // ROUTES

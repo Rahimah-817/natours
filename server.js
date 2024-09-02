@@ -59,8 +59,8 @@ app.use(
   hpp({
     whitelist: [
       "duration",
-      "ratingQuantity",
-      "ratingAverage",
+      "ratingsQuantity",
+      "ratingsAverage",
       "difficulty",
       "maxGroupSize",
       "price",
