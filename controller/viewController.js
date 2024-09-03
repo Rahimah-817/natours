@@ -15,16 +15,12 @@ const getOverview = catchAsync(async (req, res, next) => {
 
 const getTour = catchAsync(async (req, res) => {
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
-    path: "review",
-    fields: "name review rating user",
+    path: "reviews",
+    fields: "review rating user",
   });
 
-  if (!tour) {
-    return res.status(404).render("404", { title: "Tour Not Found" });
-  }
-
   res.status(200).render("tour", {
-    title: tour.name,
+    title: `${tour.name} Tour`,
     tour,
   });
 });
