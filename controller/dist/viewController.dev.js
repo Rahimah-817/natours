@@ -39,29 +39,18 @@ var getTour = catchAsync(function _callee2(req, res) {
           return regeneratorRuntime.awrap(Tour.findOne({
             slug: req.params.slug
           }).populate({
-            path: "review",
-            fields: "name review rating user"
+            path: "reviews",
+            fields: "review rating user"
           }));
 
         case 2:
           tour = _context2.sent;
-
-          if (tour) {
-            _context2.next = 5;
-            break;
-          }
-
-          return _context2.abrupt("return", res.status(404).render("404", {
-            title: "Tour Not Found"
-          }));
-
-        case 5:
           res.status(200).render("tour", {
-            title: tour.name,
+            title: "The see explore",
             tour: tour
           });
 
-        case 6:
+        case 4:
         case "end":
           return _context2.stop();
       }

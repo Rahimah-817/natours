@@ -107,7 +107,7 @@ var tourSchema = new mongoose.Schema({
     day: Number
   }],
   guides: [{
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   }]
 }, {
@@ -133,7 +133,7 @@ tourSchema.virtual("durationWeeks").get(function () {
   return this.duration / 7;
 }); // Virtual Populate
 
-tourSchema.virtual("review", {
+tourSchema.virtual("reviews", {
   ref: "Review",
   foreignField: "tour",
   localField: "_id"

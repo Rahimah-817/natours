@@ -1,142 +1,111 @@
 "use strict";
 
-var fs = require('fs');
+var fs = require("fs");
 
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-var Tour = require('../../model/tourSchema');
+var dotenv = require("dotenv");
 
-var User = require('../../model/userSchema');
+var Tour = require("./../../model/tourSchema");
 
-var Review = require('../../model/reviewSchema');
+var Review = require("./../../model/reviewSchema");
 
-var dotenv = require('dotenv');
+var User = require("./../../model/userSchema");
 
 dotenv.config({
-  path: './config.env'
+  path: "./config.env"
 });
+var DB = process.env.LOCAL_DATABASE.replace("<PASSWORD>", process.env.PASSWORD);
+mongoose.connect(DB).then(function () {
+  return console.log("DB connection successful!");
+}); // READ JSON FILE
 
-var connectDB = function connectDB() {
-  var conn;
-  return regeneratorRuntime.async(function connectDB$(_context) {
+var tours = JSON.parse(fs.readFileSync("".concat(__dirname, "/tours.json"), "utf-8"));
+var users = JSON.parse(fs.readFileSync("".concat(__dirname, "/users.json"), "utf-8"));
+var reviews = JSON.parse(fs.readFileSync("".concat(__dirname, "/reviews.json"), "utf-8")); // IMPORT DATA INTO DB
+
+var importData = function importData() {
+  return regeneratorRuntime.async(function importData$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return regeneratorRuntime.awrap(mongoose.connect(process.env.LOCAL_DATABASE));
-
-        case 3:
-          conn = _context.sent;
-          console.log("MongoDB Connected successfully!");
-          _context.next = 10;
-          break;
-
-        case 7:
-          _context.prev = 7;
-          _context.t0 = _context["catch"](0);
-          console.error("Error: ".concat(_context.t0.message));
-
-        case 10:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, null, null, [[0, 7]]);
-};
-
-connectDB(); // READ JOSN FILE
-
-var tours = JSON.parse(fs.readFileSync("".concat(__dirname, "/tours.json"), 'utf-8'));
-var users = JSON.parse(fs.readFileSync("".concat(__dirname, "/users.json"), 'utf-8'));
-var reviews = JSON.parse(fs.readFileSync("".concat(__dirname, "/reviews.json"), "utf-8")); // IMPORT DATA INTO DB
-
-var importData = function importData() {
-  return regeneratorRuntime.async(function importData$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          _context2.prev = 0;
-          _context2.next = 3;
           return regeneratorRuntime.awrap(Tour.create(tours));
 
         case 3:
-          _context2.next = 5;
+          _context.next = 5;
           return regeneratorRuntime.awrap(User.create(users, {
             validateBeforeSave: false
           }));
 
         case 5:
-          _context2.next = 7;
+          _context.next = 7;
           return regeneratorRuntime.awrap(Review.create(reviews));
 
         case 7:
-          _context2.next = 12;
+          console.log("Data successfully loaded!");
+          _context.next = 13;
           break;
 
-        case 9:
-          _context2.prev = 9;
-          _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0);
-
-        case 12:
-          process.exit();
+        case 10:
+          _context.prev = 10;
+          _context.t0 = _context["catch"](0);
+          console.log(_context.t0);
 
         case 13:
+          process.exit();
+
+        case 14:
         case "end":
-          return _context2.stop();
+          return _context.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 10]]);
 }; // DELETE ALL DATA FROM DB
 
 
 var deleteData = function deleteData() {
-  return regeneratorRuntime.async(function deleteData$(_context3) {
+  return regeneratorRuntime.async(function deleteData$(_context2) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch (_context2.prev = _context2.next) {
         case 0:
-          _context3.prev = 0;
-          _context3.next = 3;
-          return regeneratorRuntime.awrap(Tour.deleteMany({}, {
-            timeout: 30000
-          }));
+          _context2.prev = 0;
+          _context2.next = 3;
+          return regeneratorRuntime.awrap(Tour.deleteMany());
 
         case 3:
-          _context3.next = 5;
-          return regeneratorRuntime.awrap(User.deleteMany({}, {
-            timeout: 30000
-          }));
+          _context2.next = 5;
+          return regeneratorRuntime.awrap(User.deleteMany());
 
         case 5:
-          _context3.next = 7;
-          return regeneratorRuntime.awrap(Review.deleteMany({}, {
-            timeout: 30000
-          }));
+          _context2.next = 7;
+          return regeneratorRuntime.awrap(Review.deleteMany());
 
         case 7:
-          _context3.next = 12;
+          console.log("Data successfully deleted!");
+          _context2.next = 13;
           break;
 
-        case 9:
-          _context3.prev = 9;
-          _context3.t0 = _context3["catch"](0);
-          console.log(_context3.t0);
-
-        case 12:
-          process.exit();
+        case 10:
+          _context2.prev = 10;
+          _context2.t0 = _context2["catch"](0);
+          console.log(_context2.t0);
 
         case 13:
+          process.exit();
+
+        case 14:
         case "end":
-          return _context3.stop();
+          return _context2.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 10]]);
 };
 
-if (process.argv[2] === '--import') {
+if (process.argv[2] === "--import") {
   importData();
-} else if (process.argv[2] === '--delete') {
+} else if (process.argv[2] === "--delete") {
   deleteData();
 }
 //# sourceMappingURL=import-dev-data.dev.js.map

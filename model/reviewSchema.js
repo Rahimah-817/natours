@@ -18,12 +18,12 @@ const reviewSchema = mongoose.Schema(
       default: Date.now,
     },
     user: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Review must belong to a User."],
     },
     tour: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Tour",
       required: [true, "Review must belong to a tour."],
     },
