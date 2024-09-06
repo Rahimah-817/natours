@@ -1,5 +1,4 @@
 const Tour = require("../model/tourSchema");
-const User = require("../model/userSchema");
 const catchAsync = require("../utils/catchAsync");
 
 const getOverview = catchAsync(async (req, res, next) => {

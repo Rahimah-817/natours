@@ -1,1 +1,3 @@
 node dev-data/data/import-dev-data.js  -- import: import data from import-dev-data.js file into mongodb
+
+"cookie-parser": "^2.2.0",

@@ -5,12 +5,13 @@ const {
   getLoginForm,
   getSignupForm,
 } = require("../controller/viewController");
+const { protect } = require("../controller/authController");
 
 const router = express.Router();
 
 router.route("/").get(getOverview);
 // router.route("/tour").get(getTour);
-router.route("/tour/:slug").get(getTour);
+router.route("/tour/:slug").get(protect, getTour);
 
 //  /login
 router.route("/login").get(getLoginForm);
