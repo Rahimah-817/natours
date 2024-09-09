@@ -7,6 +7,7 @@ const {
   updatePassword,
   protect,
   restrictTo,
+  logout,
 } = require("../controller/authController");
 
 const {
@@ -24,18 +25,19 @@ const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
+router.get("/logout", logout);
 router.post("/forgot-password", forgotPassword);
 router.patch("/reset-password/:token", resetPassword);
 
 // Protect all routes after this middleware
-router.use(protect)
+router.use(protect);
 
 router.patch("/updateMyPassword", updatePassword);
 router.patch("/updateMe", updateMe);
 router.delete("/deleteMe", deleteMe);
-router.get("/me", getMe, getUser) ;
+router.get("/me", getMe, getUser);
 
-router.use(restrictTo('admin'));
+router.use(restrictTo("admin"));
 router.route("/").get(getAllUsesrs).post(createUser);
 router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 
