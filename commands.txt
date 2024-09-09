@@ -1,3 +1,7 @@
 node dev-data/data/import-dev-data.js  -- import: import data from import-dev-data.js file into mongodb
 
-"cookie-parser": "^2.2.0",
+npm i cookie-parser
+npm i --save-dev parcel-bundler@1
+  
+npm i axios
+npm i @label/polyfill
