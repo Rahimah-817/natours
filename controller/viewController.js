@@ -1,5 +1,6 @@
 const Tour = require("../model/tourSchema");
 const catchAsync = require("../utils/catchAsync");
+const User = require("../model/userSchema");
 
 const getOverview = catchAsync(async (req, res, next) => {
   // 1) get tour data from collection
@@ -37,10 +38,29 @@ const getSignupForm = catchAsync(async (req, res) => {
 });
 
 const getAccount = (req, res) => {
-   res.status(200).render("account", {
-     title: "Your account",
-   });
-}
+  res.status(200).render("account", {
+    title: "Your account",
+  });
+};
+
+const updateUserData = catchAsync(async (req, res, next) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      name: req.body.name,
+      email: req.body.email,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  res.status(200).render("account", {
+    title: "Your Account",
+    user: updatedUser,
+  });
+});
 
 module.exports = {
   getOverview,
@@ -48,4 +68,5 @@ module.exports = {
   getLoginForm,
   getSignupForm,
   getAccount,
+  updateUserData,
 };

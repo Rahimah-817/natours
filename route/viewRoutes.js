@@ -5,6 +5,7 @@ const {
   getLoginForm,
   getSignupForm,
   getAccount,
+  updateUserData,
 } = require("../controller/viewController");
 const { isLoggedIn, protect } = require("../controller/authController");
 
@@ -18,4 +19,5 @@ router.get("/tour/:slug", isLoggedIn, getTour);
 router.get("/login", isLoggedIn, getLoginForm);
 router.get("/signup", getSignupForm)
 router.get("/me", protect, getAccount);
+router.get("//submit-user-data", updateUserData);
 module.exports = router;
