@@ -1,25 +1,45 @@
-/* eslint-disable */
-import axios from 'axios';
-import { showAlert } from './alerts';
+// Using ES Module syntax
+import axios from "axios";
+import { showAlert } from "./alerts"; // Ensure the path is correct
 
-// type is either 'password' or 'data'
-export const updateSettings = async (data, type) => {
+export const login = async (email, password) => {
+  const API_URL =
+    process.env.API_URL || "http://127.0.0.1:3000/api/v1/users/login";
+
+  // Input validation
+  if (!email || !password) {
+    showAlert("error", "Please provide both email and password.");
+    return;
+  }
+
   try {
-    const url =
-      type === 'password'
-        ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword'
-        : 'http://127.0.0.1:3000/api/v1/users/updateMe';
+    const res = await axios.post(API_URL, { email, password });
 
-    const res = await axios({
-      method: 'PATCH',
-      url,
-      data
-    });
-
-    if (res.data.status === 'success') {
-      showAlert('success', `${type.toUpperCase()} updated successfully!`);
+    if (res.data.status === "success") {
+      showAlert("success", "Logged in successfully!");
+      window.setTimeout(() => {
+        location.assign("/");
+      }, 1500);
     }
   } catch (err) {
-    showAlert('error', err.response.data.message);
+    if (err.response) {
+      showAlert("error", err.response.data.message || "An error occurred.");
+    } else if (err.request) {
+      showAlert("error", "No response from server.");
+    } else {
+      showAlert("error", "Request failed: " + err.message);
+    }
+  }
+};
+
+export const logout = async () => {
+  try {
+    const res = await axios.get("http://127.0.0.1:3000/api/v1/users/logout");
+
+    if (res.data.status === "success") {
+      location.reload(true);
+    }
+  } catch (error) {
+    showAlert("error", "Error logging out! Try again.");
   }
 };

@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 // const fs = require("fs");
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const morgan = require("morgan");
-const connectDB = require("./config/db");
 require("dotenv").config();
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
@@ -9,10 +11,10 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const path = require("path");
-// const cookieParser = require('cookie-parser')
+const connectDB = require("./config/db");
 
 const AppError = require("./utils/appError");
-const globalErrorHandler = require("./controller/errorController");
+const globalErrorHandler = require("./controllers/errorController");
 
 process.on("uncaughtException", (err) => {
   console.log(err);
@@ -21,6 +23,8 @@ process.on("uncaughtException", (err) => {
 });
 
 const app = express();
+
+app.use(cookieParser());
 
 // PUG
 app.set("view engine", "pug");
@@ -48,7 +52,6 @@ app.use("/api", limiter);
 
 // Body parser, reading data from the body into req.body
 app.use(express.json({ limit: "10kb" }));
-// app.use(cookieParser())
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -74,10 +77,10 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 // ROUTES
-const tours = require("./route/tour");
-const users = require("./route/user");
-const reviews = require("./route/review");
-const viewRouter = require("./route/viewRoutes");
+const tours = require("./routes/tourRoutes");
+const users = require("./routes/userRoutes");
+const reviews = require("./routes/reviewRoutes");
+const viewRouter = require("./routes/viewRoutes");
 
 app.use("/", viewRouter);
 app.use("/api/v1/tours", tours);
